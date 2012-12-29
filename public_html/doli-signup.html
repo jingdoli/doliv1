@@ -13,8 +13,8 @@
     <link href="css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
       body {
-        padding-top: 40px;
-        padding-bottom: 40px;
+        padding-top: 5px;
+        padding-bottom: 2px;
         background-color: #f5f5f5;
       }
 
@@ -53,7 +53,7 @@
 
   </head>
 
-  <body>
+  <body style="background-color: #000000">
         	<div id="fb-root"></div>
 	<script type="text/javascript">
 		window.fbAsyncInit = function() {
@@ -127,6 +127,7 @@
            <div class="masthead">
                 <ul class="nav nav-pills pull-right">
                     <li class="divider-vertical"></li>
+                    <li><a href="doli-signup.html">Sign Up</a></li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" href="#" data-toggle="dropdown">Sign In <strong class="caret"></strong></a>
                         <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
@@ -143,19 +144,19 @@
                             </form>
                         </div>
                     </li>
-                    <li><a href="doli-signup.html">Sign Up</a></li>
                     <li><a href="about-doli.html">About Doli</a></li>
                 </ul>
-                <h3 class="header">Welcome to Doli Diaries</h3>
+                <h3 class="header">Welcome to Doli Diaries - your FREE personal wedding diary</h3>
         </div>
         <hr>
       <form class="form-signin">
-        <h2 class="form-signin-heading">Join Doli Club today</h2>
+        <h3 class="form-signin-heading">Start your Doli Diary today!</h3>
         <input type="text" class="input-block-level" placeholder="Email address">
         <input type="password" class="input-block-level" placeholder="Password">
         
         <button class="btn btn-large btn-primary" type="submit">Sign up</button>
-        <h3> OR Login with your facebook account </h3>
+        <h3> OR </h3>
+        <h3>Login with facebook</h3>
         <fb:login-button autologoutlink='true' perms='email,user_birthday,status_update,publish_stream'></fb:login-button>    
       </form>
 

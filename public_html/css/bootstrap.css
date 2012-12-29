@@ -160,15 +160,15 @@ textarea {
 
 body {
   margin: 0;
-  font-family: cursive;
+  font-family: Georgia;
   font-size: 14px;
   line-height: 20px;
-  color: #333333;
+  color: #ff6035;
   background-color: #ffffff;
 }
 
 a {
-  color: crimson;
+  color: #ff6035;
   text-decoration: none;
 }
 
@@ -719,7 +719,7 @@ h4 small {
 }
 
 .page-header {
-  padding-bottom: 9px;
+  padding-bottom: 4px;
   margin: 20px 0 30px;
   border-bottom: 1px solid #eeeeee;
 }
