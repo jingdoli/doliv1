@@ -16,13 +16,13 @@ and open the template in the editor.
         <link href="css/testcss.css" type="text/css" rel="stylesheet" media ="screen"/>
         <link rel="stylesheet" href="css/style.css" /> 
         
-   <!-- new code for calendar starts --> 
+   <!-- code for calendar starts --> 
     <link rel='stylesheet' type='text/css' href='css/fullcalendar/fullcalendar.css' />
     <link rel='stylesheet' type='text/css' href='css/fullcalendar/fullcalendar.print.css' media='print' />
     <script type='text/javascript' src='js/calendar/jquery-1.8.1.min.js'></script>
     <script type='text/javascript' src='js/calendar/jquery-ui-1.8.23.custom.min.js'></script>
     <script type='text/javascript' src='css/fullcalendar/fullcalendar.min.js'></script>
-<script type='text/javascript'>
+    <script type='text/javascript'>
 	$(document).ready(function() {
 	
 		var date = new Date();
@@ -98,7 +98,7 @@ and open the template in the editor.
 		});
 		
 	});
-</script>
+    </script>
         <style type='text/css'>
 	#calendar {
 		width: 250px;
@@ -106,7 +106,15 @@ and open the template in the editor.
 		margin: 0 auto;
 		}
         </style>  
-   <!-- new code for calendar ends -->  
+   <!-- code for calendar ends -->  
+   
+   <!-- code for budget grid starts -->
+    <link rel="STYLESHEET" type="text/css" href="css/grid/dhtmlxgrid.css">
+    <link rel="stylesheet" type="text/css" href="css/grid/dhtmlxgrid_dhx_skyblue.css">
+    <script  src="js/grid/dhtmlxcommon.js"></script>
+    <script  src="js/grid/dhtmlxgrid.js"></script>        
+    <script  src="js/grid/dhtmlxgridcell.js"></script> 
+   <!-- code for budget grid ends -->
     </head>
     
     <body style="background-color: #000000">      
@@ -132,7 +140,88 @@ and open the template in the editor.
 
                 <div class="tab-content">
                     <h4>Budget</h4>
-                   
+                   <table width="600px">
+                        <tr>
+                            <td width="400px" valign="top">
+                                <div id="gridbox" style="width:360px;height:250px;background-color:white;overflow:hidden"></div>
+                            </td>
+                            
+                            <td valign="top">
+                                <div> My calculator
+                                    <form name="calculator">
+                                        <table border=4>
+                                            <tr>
+                                                <td>
+                                                    <input type="button" value="1" onclick="calculator.text.value += '1'">
+                                                    <input type="button" value="2" onclick="calculator.text.value += '2'">
+                                                    <input type="button" value="3" onclick="calculator.text.value += '3'">
+                                                    <input type="button" value="+" onclick="calculator.text.value += ' + '">
+                                                    <br>
+                                                    <input type="button" value="4" onclick="calculator.text.value += '4'">
+                                                    <input type="button" value="5" onclick="calculator.text.value += '5'">
+                                                    <input type="button" value="6" onclick="calculator.text.value += '6'">
+                                                    <input type="button" value="-" onclick="calculator.text.value += ' - '">
+                                                    <br>
+                                                    <input type="button" value="7" onclick="calculator.text.value += '7'">
+                                                    <input type="button" value="8" onclick="calculator.text.value += '8'">
+                                                    <input type="button" value="9" onclick="calculator.text.value += '9'">
+                                                    <input type="button" value="*" onclick="calculator.text.value += ' * '">
+                                                    <br>
+                                                    <input type="button" value="c" onclick="calculator.text.value = ''">
+                                                    <input type="button" value="0" onclick="calculator.text.value += '0'">
+                                                    <input type="button" value="=" onclick="calculator.text.value = eval(calculator.text.value)">
+                                                    <input type="button" value="/" onclick="calculator.text.value += ' / '">
+                                                    <br>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </form>
+                                </div>
+                            </td> 
+                        </tr>   
+                    </table>
+                    <table width="675">  
+                        <li><a href="#" onclick="add_r()">Add new item</a></li>   
+                        <li><a href="#" onclick="delete_r()">Delete item by index</a></li>
+                    </table>
+                    <script>
+                        
+                    function add_r() {
+                        var ind1 = window.prompt('Enter the expense item', '');
+                        if (ind1 === null || typeof ind1 == "undefined")
+                            return;
+                        var ind2 = window.prompt('Enter the value', '');
+                        if (ind2 === null || typeof ind2 == "undefined")
+                            return;
+                        var ind3 = window.prompt('Enter the location', '');
+                        if (ind3 === null || typeof ind3 == "undefined")
+                            return;
+                        mygrid.addRow(mygrid.uid(), [ind1, ind2], ind3);
+                    }
+                    
+                /*   function add_column() {
+                        var ind1 = window.prompt('Enter the new column', '');
+                        if (ind1 === null || typeof ind1 == "undefined")
+                            return;
+                        mygrid.insertColumn(0,ind1,text,width,sort,align,valign,FALSE,RED);
+                    } */
+                    function delete_r() {
+                        var ind1 = window.prompt('Row number to delete', '0');
+                        if (ind1 === null)
+                            return;
+                        mygrid.deleteRow(mygrid.getRowId(ind1));
+                    }
+                        mygrid = new dhtmlXGridObject('gridbox');
+                        mygrid.setHeader("Expense Item, Cost(Rupees)");
+                        mygrid.setInitWidths("100,250");
+                        mygrid.setColAlign("right,left");
+                        mygrid.setColSorting("str,str");
+                        mygrid.init();
+                        mygrid.setSkin("dhx_skyblue");
+                        mygrid.loadXML("xml/grid/grid_data_storage.xml", function() {
+                            mygrid.selectRow(1);
+                        });
+                    </script>
                 </div>
 
                 <div class="tab-content">
@@ -150,9 +239,7 @@ and open the template in the editor.
             </div>
 		</section>
                 
-        <!-- Include Scripts -->
-    <!--    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> 
-        <script type="text/javascript" src="http://benalman.com/code/projects/jquery-hashchange/jquery.ba-hashchange.js"></script>    -->   
+        <!-- Include Scripts --> 
         <script type="text/javascript" src="js/script.js"></script> 
 <!-- end of vertical tab code-->
     </body>
