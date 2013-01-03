@@ -46,7 +46,8 @@ and open the template in the editor.
 							title: title,
 							start: start,
 							end: end,
-							allDay: allDay
+							allDay: allDay,
+                                                        id: 1000, //need to make id incremental rather than static
 						},
 						true // make the event "stick"
 					);
@@ -54,12 +55,24 @@ and open the template in the editor.
 				calendar.fullCalendar('unselect');
 			},
 			editable: true,
+                        eventClick: function(event, element) {
+                            var title = prompt('(To delete event : leave blank and press ok)\n\(To edit event :  enter the new title and press ok)\n\New Event Title:');
+                            if (title) {
+                                event.title = title;
+                                $('#calendar').fullCalendar('updateEvent', event); 
+                            }
+                            else {
+                                $('#calendar').fullCalendar('removeEvents', event.id);
+                            }
+                        },
 			events: [
 				{
+                                        id: 200,
 					title: 'All Day Event',
 					start: new Date(y, m, 1)
 				},
 				{
+                                        id: 201,
 					title: 'Long Event',
 					start: new Date(y, m, d-5),
 					end: new Date(y, m, d-2)
@@ -77,17 +90,20 @@ and open the template in the editor.
 					allDay: false
 				},
 				{
+                                        id: 202,
 					title: 'Meeting',
 					start: new Date(y, m, d, 10, 30),
 					allDay: false
 				},
 				{
+                                        id: 203,
 					title: 'Lunch',
 					start: new Date(y, m, d, 12, 0),
 					end: new Date(y, m, d, 14, 0),
 					allDay: false
 				},
 				{
+                                        id: 204,
 					title: 'Birthday Party',
 					start: new Date(y, m, d+1, 19, 0),
 					end: new Date(y, m, d+1, 22, 30),
