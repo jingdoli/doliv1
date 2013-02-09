@@ -1,0 +1,32 @@
+how to setup django
+===================
+
+- install mac port
+- install python 2.7
+- install easy_install or pip
+- easy_install django
+- cd into your work folder where you want to start your django project
+- django-admin.py startproject --template=https://github.com/pinax/pinax-project-account/zipball/master doli
+ note: you can change doli to the name you want to be.
+- cd doli
+- pip install -r requirements.txt
+- you might still need to install some dependencies, like:
+pinax_theme_bootstrap_account
+pinax_theme_bootstrap
+django-user-accounts
+metron
+eventlog
+jsonfield
+
+to install pinax-utils
+sudo easy_install --index-url=http://dist.pinaxproject.com/dev/ pinax-utils
+
+-python manage.py syncdb && python manage.py runserver
+
+-- Here you should have basic django server running at 127.0.0.1:8000 with basic template of user account management.
+
+- then pull doli folder from git and replace the content of the project folder here: ie: git repo: doliv1/django_proj/doli with doli/doli/
+
+- you need to change the database settings in setting.py
+
+- restart the server, then u should see doli prototype page
