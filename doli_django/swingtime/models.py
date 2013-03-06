@@ -66,9 +66,12 @@ class Event(models.Model):
     Container model for general metadata and associated ``Occurrence`` entries.
     '''
     title = models.CharField(_('title'), max_length=32)
+    subtitle = models.CharField(_('subtitle'), max_length=32)
     description = models.CharField(_('description'), max_length=100)
     event_type = models.ForeignKey(EventType, verbose_name=_('event type'))
+    user = models.ForeignKey(User, verbose_name=_('user info'))
     notes = generic.GenericRelation(Note, verbose_name=_('notes'))
+
 
     #===========================================================================
     class Meta:
@@ -215,10 +218,15 @@ class Occurrence(models.Model):
     def event_type(self):
         return self.event.event_type
 
+    @property
+    def user(self):
+        return self.event.user
+
 
 #-------------------------------------------------------------------------------
 def create_event(
-    title, 
+    user,
+    title,
     event_type,
     description='',
     start_time=None,
@@ -259,6 +267,7 @@ def create_event(
         )
     
     event = Event.objects.create(
+        user = user,
         title=title, 
         description=description,
         event_type=event_type
