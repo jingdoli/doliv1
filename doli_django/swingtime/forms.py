@@ -336,6 +336,7 @@ class MultipleOccurrenceForm(forms.Form):
         event.add_occurrences(
             self.cleaned_data['start_time'], 
             self.cleaned_data['end_time'],
+            event.user,
             **params
         )
 
@@ -394,6 +395,7 @@ class EventForm(forms.ModelForm):
     def __init__(self, *args, **kws):
         super(EventForm, self).__init__(*args, **kws)
         self.fields['description'].required = False
+        self.fields['subtitle'].required = False
 
 
 #===============================================================================

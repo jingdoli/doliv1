@@ -52,7 +52,8 @@ def event_listing(
 #-------------------------------------------------------------------------------
 def event_view(
     request, 
-    pk, 
+    pk,
+    user,
     template='swingtime/event_detail.html', 
     event_form_class=forms.EventForm,
     recurrence_form_class=forms.MultipleOccurrenceForm
@@ -72,7 +73,7 @@ def event_view(
     recurrence_form
         a form object for adding occurrences
     '''
-    event = get_object_or_404(Event, pk=pk)
+    event = get_object_or_404(Event, pk=pk, user=user)
     event_form = recurrence_form = None
     if request.method == 'POST':
         if '_update' in request.POST:
@@ -189,7 +190,8 @@ def add_event(
 #-------------------------------------------------------------------------------
 def _datetime_view(
     request, 
-    template, 
+    template,
+    user, 
     dt, 
     timeslot_factory=None, 
     items=None,
@@ -220,7 +222,7 @@ def _datetime_view(
         day=dt, 
         next_day=dt + timedelta(days=+1),
         prev_day=dt + timedelta(days=-1),
-        timeslots=timeslot_factory(dt, items, **params)
+        timeslots=timeslot_factory(user, dt, items, **params)
     )
     
     return render_to_response(
@@ -229,28 +231,29 @@ def _datetime_view(
         context_instance=RequestContext(request)
     )
 
-
 #-------------------------------------------------------------------------------
-def day_view(request, year, month, day, template='swingtime/daily_view.html', **params):
+def day_view(request, year, month, day, user, template='swingtime/daily_view.html', **params):
     '''
     See documentation for function``_datetime_view``.
     
     '''
+
     dt = datetime(int(year), int(month), int(day))
-    return _datetime_view(request, template, dt, **params)
+    return _datetime_view(request, template, user, dt, **params)
 
 
 #-------------------------------------------------------------------------------
-def today_view(request, template='swingtime/daily_view.html', **params):
+def today_view(request, user, template='swingtime/daily_view.html', **params):
     '''
     See documentation for function``_datetime_view``.
     
     '''
-    return _datetime_view(request, template, datetime.now(), **params)
+    return _datetime_view(request=request, template=template, dt=datetime.now(),
+            user=user, **params)
 
 
 #-------------------------------------------------------------------------------
-def year_view(request, year, template='swingtime/yearly_view.html', queryset=None):
+def year_view(request, year, user, template='swingtime/yearly_view.html', queryset=None):
     '''
 
     Context parameters:
@@ -304,6 +307,7 @@ def month_view(
     request, 
     year, 
     month, 
+    user,
     template='swingtime/monthly_view.html',
     queryset=None
 ):

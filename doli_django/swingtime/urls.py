@@ -2,28 +2,29 @@ from django.conf.urls.defaults import *
 
 from swingtime import views
 
+
 urlpatterns = patterns('',
     url(
-        r'^(?:calendar/)?$', 
+        r'(?P<user>\d)/', 
         views.today_view, 
         name='swingtime-today'
     ),
 
     url(
-        r'^calendar/(?P<year>\d{4})/$', 
+        r'(?P<year>\d{4})/(?P<user>\d)/$', 
         views.year_view, 
         name='swingtime-yearly-view'
     ),
 
     url(
-        r'^calendar/(\d{4})/(0?[1-9]|1[012])/$', 
+        r'(?P<year>\d{4})/(?P<month>0?[1-9]|1[012])/$',
         views.month_view, 
         name='swingtime-monthly-view'
     ),
 
     url(
-        r'^calendar/(\d{4})/(0?[1-9]|1[012])/([0-3]?\d)/$', 
-        views.day_view, 
+        r'(?P<year>\d{4})/(?P<month>0?[1-9]|1[012])/(?P<day>[0-3]?\d)/(?P<user>\d)/$',
+        views.day_view,
         name='swingtime-daily-view'
     ),
 

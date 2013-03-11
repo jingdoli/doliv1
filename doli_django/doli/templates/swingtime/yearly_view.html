@@ -3,10 +3,10 @@
 
 {% block  body %}
     <h3>
-        <a href="{% url swingtime-yearly-view last_year %}" 
+        <a href="{% url swingtime-yearly-view last_year user.id%}" 
            title="Last Month">&larr;</a>
         Yearly View {{ year }}
-        <a href="{% url swingtime-yearly-view next_year %}" 
+        <a href="{% url swingtime-yearly-view next_year user.id%}" 
            title="Next Month">&rarr;</a>
     </h3>
     

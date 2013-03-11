@@ -19,8 +19,7 @@
     {% endblock %}
 
     {% if user.is_authenticated %}
-        {% url swingtime-daily-view next_day.year next_day.month next_day.day as what_next_url %}
-        <p class="what_next">{% blocktrans %}Check out your calendar <a href="calendar" class="btn primary large">My Calendar</a>{% endblocktrans %}</p>
+        <p class="what_next">Check out your calendar <a href="{% url swingtime.views.today_view user.id %}" class="btn primary large">My Calendar</a></p>
     {% else %}
         {% url account_login as login_url %}
         {% url account_signup as signup_url %}

@@ -89,7 +89,7 @@ class Event(models.Model):
         return ('swingtime-event', [str(self.id)])
 
     #---------------------------------------------------------------------------
-    def add_occurrences(self, start_time, end_time, **rrule_params):
+    def add_occurrences(self, start_time, end_time, user, **rrule_params):
         '''
         Add one or more occurences to the event using a comparable API to 
         ``dateutil.rrule``. 
@@ -112,7 +112,7 @@ class Event(models.Model):
         else:
             delta = end_time - start_time
             for ev in rrule.rrule(dtstart=start_time, **rrule_params):
-                self.occurrence_set.create(start_time=ev, end_time=ev + delta)
+                self.occurrence_set.create(start_time=ev, end_time=ev + delta, user = user)
 
     #---------------------------------------------------------------------------
     def upcoming_occurrences(self):
@@ -132,11 +132,11 @@ class Event(models.Model):
         return upcoming and upcoming[0] or None
 
     #---------------------------------------------------------------------------
-    def daily_occurrences(self, dt=None):
+    def daily_occurrences(self, user, dt=None):
         '''
         Convenience method wrapping ``Occurrence.objects.daily_occurrences``.
         '''
-        return Occurrence.objects.daily_occurrences(dt=dt, event=self)
+        return Occurrence.objects.daily_occurrences(user=user, dt=dt, event=self)
 
 
 #===============================================================================
@@ -145,7 +145,7 @@ class OccurrenceManager(models.Manager):
     use_for_related_fields = True
     
     #---------------------------------------------------------------------------
-    def daily_occurrences(self, dt=None, event=None):
+    def daily_occurrences(self, user, dt=None, event=None):
         '''
         Returns a queryset of for instances that have any overlap with a 
         particular day.
@@ -162,18 +162,21 @@ class OccurrenceManager(models.Manager):
             models.Q(
                 start_time__gte=start,
                 start_time__lte=end,
+                user = user
             ) |
             models.Q(
                 end_time__gte=start,
                 end_time__lte=end,
+                user = user,
             ) |
             models.Q(
                 start_time__lt=start,
-                end_time__gt=end
+                end_time__gt=end,
+                user = user
             )
         )
         
-        return qs.filter(event=event) if event else qs
+        return qs.filter(event=event, user=user) if event else qs
 
 
 #===============================================================================
@@ -184,8 +187,9 @@ class Occurrence(models.Model):
     '''
     start_time = models.DateTimeField(_('start time'))
     end_time = models.DateTimeField(_('end time'))
+    user = models.ForeignKey(User, verbose_name=_('user info'), editable=False)
     event = models.ForeignKey(Event, verbose_name=_('event'), editable=False)
-    notes = generic.GenericRelation(Note, verbose_name=_('notes'))
+
 
     objects = OccurrenceManager()
 
@@ -219,7 +223,7 @@ class Occurrence(models.Model):
         return self.event.event_type
 
     @property
-    def user(self):
+    def get_event_user(self):
         return self.event.user
 
 
@@ -283,5 +287,5 @@ def create_event(
     )
     
     end_time = end_time or start_time + swingtime_settings.DEFAULT_OCCURRENCE_DURATION
-    event.add_occurrences(start_time, end_time, **rrule_params)
+    event.add_occurrences(start_time, end_time, user, **rrule_params)
     return event
